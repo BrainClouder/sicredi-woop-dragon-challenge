@@ -6,6 +6,7 @@ const initialState = {
     dragonList: [],
     routes: ['/home', '/login'],
     logged: false,
+    blockSave: false,
     userInfo: {
         name: '',
         mail: ''
@@ -14,9 +15,24 @@ const initialState = {
 
 const main = (state = initialState, action: any) => {
     switch (action.type) {
+        case ACTIONS.doTheLoginStuff:
+            return {
+                ...state,
+                logged: true,
+            }
+        case ACTIONS.doTheLogoffStuff:
+            return {
+                ...state,
+                logged: false,
+            }
+        case ACTIONS.loadingData:
+            return {
+                ...state,
+                blockSave: action.payload,
+            }
         case ACTIONS.deleteTheDragon:
             const a = [...state.dragonList];
-            //@ts-ignore
+            // @ts-ignore
             a.splice(a.indexOf(action.payload), 1);
             return {
                 ...state,

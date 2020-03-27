@@ -1,6 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { ACTIONS } from '../store/actions/main';
+import { Redirect } from 'react-router';
 
-const Login: React.FC = () => {
+interface ILogin {
+    doLogin: () => void;
+    logged: boolean;
+}
+
+const Login: React.FC<ILogin> = ({doLogin, logged}) => {
     const [register, doRegister] = React.useState(false);
     const loginForm = [
         {
@@ -64,6 +72,9 @@ const Login: React.FC = () => {
     ];
     const formConstructor = (obj: object[]) => {
         return (
+            logged ? 
+            <Redirect to={'/home'} />
+            :
             <div style={{
                 margin: '20px'
             }}>
@@ -76,7 +87,7 @@ const Login: React.FC = () => {
                         </div>
                         <input
                             style={{
-                                borderRadius: '20px',
+                                borderRadius: '10px',
                                 border: '',
                                 fontSize: 22,
                                 textAlign: 'center'
@@ -90,13 +101,12 @@ const Login: React.FC = () => {
         )
     }
 
-    return (<div>
+    return (
+    <div>
         <div style={{
-            backgroundColor: '#808969',
+            backgroundColor: '#f3f3f7',
             width: '350px',
             borderRadius: '20px',
-            borderBottomRightRadius: '35%',
-            borderBottomLeftRadius: '35%',
             margin: '10vh auto',
             paddingBottom: '1em'
         }}>
@@ -140,9 +150,11 @@ const Login: React.FC = () => {
                 textAlign: 'center',
                 margin: '15px',
             }}>
-                <a style={{
+                <a 
+                onClick={doLogin}
+                style={{
                     fontSize: 22,
-                    backgroundColor: '#f56a53',
+                    backgroundColor: '#e63746',
                     padding: '10px 20px',
                     borderRadius: '10px', color: '#fff', fontWeight: 'bold'
                 }}>ENTRAR</a>
@@ -152,4 +164,18 @@ const Login: React.FC = () => {
     </div>)
 }
 
-export default Login;
+const mapStateToProps = (state: any) => {
+    const t = state;
+    return {
+        logged: t.logged,
+    }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+      doLogin: () => dispatch({type: ACTIONS.doTheLoginStuff}),
+    }
+  }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

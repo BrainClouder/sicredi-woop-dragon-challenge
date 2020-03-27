@@ -7,6 +7,7 @@ import Home from './pages/Home';
 // import Settings from './pages/Settings';
 // import About from './pages/About';
 import Login from './pages/Login';
+import { ACTIONS } from './store/actions/main';
 
 interface IApp {
   routes: string[];
@@ -17,7 +18,7 @@ const App: React.FC<IApp> = ({ routes, logged }) => {
   const pages = [<Home />, <Login />];
   return (<>
     <div style={{
-      background: '#473b3f',
+      background: '#b3dbbf',
       height: '100vh',
       width: '100vw',
       position: 'fixed'
@@ -30,7 +31,7 @@ const App: React.FC<IApp> = ({ routes, logged }) => {
             {routes.map((e: string, index: any) => <Route key={e}
               path={e} component={() => <div>{pages[index]}</div>}
             />)}
-            {/* <Route path='/' component={() => <Redirect to={logged ? routes[0] : routes[routes.length - 1]} />} /> */}
+            <Route path='/' component={() => <Redirect to={logged ? routes[0] : routes[routes.length - 1]} />} />
           </Switch>
         </Router>
         </div>
@@ -48,6 +49,12 @@ const mapStateToProps = (state: any) => {
   }
 }
 
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    doLogoff: () => dispatch({type: ACTIONS.doTheLogoffStuff})
+  }
+}
 
 
-export default connect(mapStateToProps)(App);
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
